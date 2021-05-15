@@ -1,4 +1,4 @@
-package com.extack.jetmovies.ui.main
+package com.extack.jetmovies.ui
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

@@ -1,7 +1,8 @@
-package com.extack.jetmovies.api
+package com.extack.jetmovies.api.repository
 
-import com.extack.jetmovies.api.other.Resource
-import com.extack.jetmovies.api.other.apiCaller
+import com.extack.jetmovies.api.commons.Resource
+import com.extack.jetmovies.api.commons.apiCaller
+import com.squareup.moshi.Json
 import retrofit2.http.GET
 import javax.inject.Inject
 
@@ -26,5 +27,8 @@ data class PopularMovieResponse(
 )
 
 data class PopularMovie(
-    val id: Long
+    val id: Long,
+    val title : String,
+    @field:Json(name = "backdrop_path")
+    val poster_path : String
 )

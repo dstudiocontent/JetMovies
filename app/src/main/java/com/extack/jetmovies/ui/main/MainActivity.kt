@@ -4,46 +4,33 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.animation.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
-import com.extack.jetmovies.extensions.logInfo
+import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.navArgument
+import androidx.navigation.compose.rememberNavController
+import com.extack.jetmovies.ui.home.HomeScreen
+import com.extack.jetmovies.ui.movie_detail.MovieScreen
 import com.extack.jetmovies.ui.theme.JetMoviesTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    private val viewModel: MainActivityViewModel by viewModels()
+    private val viewModel by viewModels<MainActivityViewModel>()
+    @ExperimentalAnimationApi
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
-        viewModel.getPopularMovies()
-        viewModel.popularMoviesLiveData.observe(this) {
-            it.forEach { popularMovie ->
-                logInfo("${popularMovie.id}")
-            }
-        }
         setContent {
             JetMoviesTheme {
-                // A surface container using the 'background' color from the theme
+                val navController = rememberNavController()
                 Surface(color = MaterialTheme.colors.background) {
-                    Greeting("Android")
+                    HostScreen(navController = navController)
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    JetMoviesTheme {
-        Greeting("Android")
     }
 }

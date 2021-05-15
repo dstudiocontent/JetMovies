@@ -28,6 +28,7 @@ android {
         }
     }
     compileOptions {
+        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
@@ -54,6 +55,8 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling:${rootProject.extra["compose_version"]}")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.3.0")
     implementation("androidx.activity:activity-compose:1.3.0-alpha04")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha03")
+    implementation ("androidx.compose.runtime:runtime-livedata:1.0.0-beta02")
 
     implementation("com.google.dagger:hilt-android:2.33-beta")
     kapt("com.google.dagger:hilt-compiler:2.33-beta")
@@ -61,6 +64,15 @@ dependencies {
     implementation("com.squareup.retrofit2:retrofit:2.6.0")
     implementation("com.squareup.retrofit2:converter-moshi:2.6.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.2.1")
+
+    implementation ("com.google.accompanist:accompanist-coil:0.7.0")
+
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.0.9")
+
+    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.0-alpha03")
+
+    implementation ("androidx.navigation:navigation-compose:1.0.0-alpha09")
+    implementation ("androidx.hilt:hilt-navigation-compose:1.0.0-alpha01")
 
     testImplementation("junit:junit:4.+")
     androidTestImplementation("androidx.test.ext:junit:1.1.2")

@@ -1,6 +1,5 @@
-package com.extack.jetmovies.api.other
+package com.extack.jetmovies.api.commons
 
-import com.extack.jetmovies.api.API_KEY
 import okhttp3.Interceptor
 import okhttp3.Response
 

@@ -5,9 +5,9 @@ import com.extack.jetmovies.BuildConfig
 
 const val DEBUG_TAG = "_TAG"
 
-fun Any.logInfo(message: String? = "", throwable: Throwable? = null) {
+fun logInfo(message: String? = "", throwable: Throwable? = null) {
     if (BuildConfig.DEBUG)
-        Log.i(DEBUG_TAG, "${this.javaClass.simpleName} $message", throwable)
+        Log.i(DEBUG_TAG, "$message", throwable)
 }
 
 fun Any.logVerbose(message: String? = "", throwable: Throwable? = null) {
