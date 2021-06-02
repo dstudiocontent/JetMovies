@@ -1,9 +1,10 @@
 package com.extack.jetmovies.ui.home
 
 import androidx.lifecycle.*
+import androidx.paging.cachedIn
 import com.extack.jetmovies.api.commons.Resource
-import com.extack.jetmovies.api.repository.PopularMoviesRepository
-import com.extack.jetmovies.api.repository.RegionalMoviesRepository
+import com.extack.jetmovies.domain.repository.PopularMoviesRepository
+import com.extack.jetmovies.domain.repository.RegionalMoviesRepository
 import com.extack.jetmovies.domain.mapper.toMovie
 import com.extack.jetmovies.domain.model.Movie
 import com.extack.jetmovies.extensions.logError
@@ -16,37 +17,7 @@ import kotlin.math.log
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val popularMoviesRepository: PopularMoviesRepository,
-    private val savedStateHandle: SavedStateHandle
+    popularMoviesRepository: PopularMoviesRepository
 ) : ViewModel() {
-    init {
-        fetchPopularMovies()
-    }
-
-    private val _popularMoviesLiveData = MutableLiveData<List<Movie>>()
-    val popularMoviesLiveData: LiveData<List<Movie>> = _popularMoviesLiveData
-
-    fun saveScrollPositionWithKey(key: String, position: Int, offset: Int) {
-        logInfo("Saving... $position")
-        savedStateHandle[key] = ScrollDetail(position,offset)
-    }
-
-    fun getScrollPositionByKey(key: String): ScrollDetail {
-        return savedStateHandle[key]?:ScrollDetail(0,0)
-    }
-
-    private fun fetchPopularMovies() {
-        viewModelScope.launch {
-            when (val apiCall = popularMoviesRepository.getPopularMovies()) {
-                is Resource.Success -> {
-                    _popularMoviesLiveData.value = apiCall.data.results.map {
-                        it.toMovie()
-                    }
-                }
-                is Resource.Failure -> logError(apiCall.error.errorMessage)
-            }
-        }
-    }
-
-
+    val movies = popularMoviesRepository.getPopularMovies().flow.cachedIn(viewModelScope)
 }

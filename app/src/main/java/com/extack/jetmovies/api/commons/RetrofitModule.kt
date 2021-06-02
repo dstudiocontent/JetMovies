@@ -1,7 +1,6 @@
 package com.extack.jetmovies.api.commons
 
-import com.extack.jetmovies.api.repository.PopularMoviesApi
-import com.extack.jetmovies.api.repository.RegionalMoviesApi
+import com.extack.jetmovies.api.endpoints.MoviesApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -56,11 +55,6 @@ object RetrofitModule {
 
     @Provides
     @Singleton
-    fun popularMoviesApi(retrofit: Retrofit): PopularMoviesApi =
-        retrofit.create(PopularMoviesApi::class.java)
-
-    @Provides
-    @Singleton
-    fun regionalMoviesApi(retrofit: Retrofit): RegionalMoviesApi =
-        retrofit.create(RegionalMoviesApi::class.java)
+    fun provideMoviesApi(retrofit: Retrofit): MoviesApi =
+        retrofit.create(MoviesApi::class.java)
 }
