@@ -1,6 +1,5 @@
 package com.extack.jetmovies.api.commons
 
-import com.extack.jetmovies.extensions.logError
 import retrofit2.HttpException
 import java.io.IOException
 import java.net.SocketTimeoutException

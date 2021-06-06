@@ -1,6 +1,5 @@
 package com.extack.jetmovies.api.commons
 
-import com.extack.jetmovies.extensions.logInfo
 import okhttp3.ResponseBody
 import org.json.JSONObject
 
@@ -16,8 +15,6 @@ sealed class Error(val errorMessage: String) {
 
 }
 
-private const val MESSAGE_KEY = "status_message"
-private const val ERROR_KEY = "error"
 
 fun extractErrorMessage(httpCode: Int, responseBody: ResponseBody?): Error {
     return try {

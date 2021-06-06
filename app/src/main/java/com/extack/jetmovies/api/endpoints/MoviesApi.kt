@@ -3,6 +3,7 @@ package com.extack.jetmovies.api.endpoints
 import com.extack.jetmovies.api.response.MovieListResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
+import java.time.LocalDate
 
 interface MoviesApi {
     @GET("movie/popular")
@@ -10,8 +11,9 @@ interface MoviesApi {
 
     @GET("discover/movie")
     suspend fun getRegionalMovies(
-        @Query("region") region: String,
-        @Query("primary_release_year") releaseYear: Int,
-        @Query("with_original_language") originalLang: String
+        @Query("with_original_language") originalLang: String,
+        @Query("page") pageNumber: Int = 1,
+        @Query("sort_by") sortBy: String = "release_date.desc",
+        @Query("release_date.lte") today: String = LocalDate.now().toString()
     ): MovieListResponse
 }

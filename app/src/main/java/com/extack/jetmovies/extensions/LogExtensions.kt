@@ -10,22 +10,22 @@ fun logInfo(message: String? = "", throwable: Throwable? = null) {
         Log.i(DEBUG_TAG, "$message", throwable)
 }
 
-fun Any.logVerbose(message: String? = "", throwable: Throwable? = null) {
+fun logVerbose(message: String? = "", throwable: Throwable? = null) {
     if (BuildConfig.DEBUG)
-        Log.v(DEBUG_TAG, "${this.javaClass.simpleName} $message", throwable)
+        Log.v(DEBUG_TAG, "$message", throwable)
 }
 
-fun Any.logWarn(message: String? = "", throwable: Throwable? = null) {
+fun logWarn(message: String? = "", throwable: Throwable? = null) {
     if (BuildConfig.DEBUG)
-        Log.w(DEBUG_TAG, "${this.javaClass.simpleName} $message", throwable)
+        Log.w(DEBUG_TAG, "$message", throwable)
 }
 
-fun Any.logDebug(message: String? = "", throwable: Throwable? = null) {
+fun logDebug(message: String? = "", throwable: Throwable? = null) {
     if (BuildConfig.DEBUG)
-        Log.d(DEBUG_TAG, "${this.javaClass.simpleName} $message", throwable)
+        Log.d(DEBUG_TAG, "$message", throwable)
 }
 
-fun Any.logError(message: String? = "", throwable: Throwable? = null) {
+fun logError(message: String? = "", throwable: Throwable? = null) {
     if (BuildConfig.DEBUG)
-        Log.e(DEBUG_TAG, "${this.javaClass.simpleName} $message", throwable)
+        Log.e(DEBUG_TAG, "$message", throwable)
 }

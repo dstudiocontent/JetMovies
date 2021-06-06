@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Android/Hobby Projects/JetMovies/app/src/main/res/drawable/ic_baseline_home_24.xml" value="0.27447916666666666" />
+        <entry key="..\:/Android/Hobby Projects/JetMovies/app/src/main/res/drawable/ic_baseline_local_movies_24.xml" value="0.27447916666666666" />
+        <entry key="..\:/Android/Hobby Projects/JetMovies/app/src/main/res/drawable/ic_baseline_tv_24.xml" value="0.27447916666666666" />
+        <entry key="..\:/Android/Hobby Projects/JetMovies/app/src/main/res/drawable/ic_house_black_silhouette_without_door.xml" value="0.27447916666666666" />
+      </map>
+    </option>
+  </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />

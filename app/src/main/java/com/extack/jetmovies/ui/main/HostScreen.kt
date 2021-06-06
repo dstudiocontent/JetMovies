@@ -1,35 +1,52 @@
 package com.extack.jetmovies.ui.main
 
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.navArgument
+import com.extack.jetmovies.ui.commons.components.ToolbarComponent
 import com.extack.jetmovies.ui.commons.model.BottomNavScreens
 import com.extack.jetmovies.ui.home.HomeScreen
 import com.extack.jetmovies.ui.movie_detail.MovieScreen
 import com.extack.jetmovies.ui.movies.MoviesScreen
+import com.extack.jetmovies.ui.programs.ProgramsScreen
+import com.extack.jetmovies.ui.regional_movies.RegionalMoviesScreen
 
+@ExperimentalFoundationApi
 @Composable
 fun HostScreen(navController: NavHostController) {
-    val bottomNavItems = listOf(BottomNavScreens.NavHomeScreen, BottomNavScreens.NavMovieScreen)
+
+    val bottomNavItems = listOf(
+        BottomNavScreens.NavHomeScreen,
+        BottomNavScreens.NavMovieScreen,
+        BottomNavScreens.NavTvScreen
+    )
 
     Scaffold(
         bottomBar = {
             val currentRoute: String = currentRoute(navController = navController) ?: ""
-            if (currentRoute == BottomNavScreens.NavHomeScreen.route ||
-                currentRoute == BottomNavScreens.NavMovieScreen.route
-            ) {
+            bottomNavItems.find { it.route == currentRoute }?.let {
                 BottomNav(navController = navController, items = bottomNavItems)
             }
         }
-    ) {
-        NavConfig(navController)
+    ) { padding ->
+        Column(
+            modifier = Modifier.padding(0.dp, 0.dp, 0.dp, padding.calculateBottomPadding())
+        ) {
+            ToolbarComponent()
+            NavConfig(navController)
+        }
     }
 }
 
@@ -57,6 +74,7 @@ fun BottomNav(navController: NavHostController, items: List<BottomNavScreens>) {
     }
 }
 
+@ExperimentalFoundationApi
 @Composable
 fun NavConfig(navController: NavHostController) {
 
@@ -70,9 +88,20 @@ fun NavConfig(navController: NavHostController) {
             }
         }
         composable(BottomNavScreens.NavMovieScreen.route) {
-            MoviesScreen { id ->
+            MoviesScreen(onMovieClick = { id ->
                 toMovieDetail(navController = navController, id = id)
-            }
+            }, onViewAllClick = { isoValue ->
+                navController.navigate("regional/${isoValue}") {
+                    popUpTo("regional") {
+                        saveState = true
+                    }
+                    restoreState = true
+                    launchSingleTop = true
+                }
+            })
+        }
+        composable(BottomNavScreens.NavTvScreen.route) {
+            ProgramsScreen()
         }
 
         composable(
@@ -80,6 +109,13 @@ fun NavConfig(navController: NavHostController) {
             arguments = listOf(navArgument("id") { type = NavType.LongType })
         ) { backstackEntry ->
             MovieScreen(backstackEntry.arguments?.getLong("id") ?: 0)
+        }
+
+        composable(
+            "regional/{isoValue}",
+            arguments = listOf(navArgument("isoValue") { type = NavType.StringType })
+        ) { backstackEntry ->
+            RegionalMoviesScreen(backstackEntry.arguments?.getString("isoValue") ?: "")
         }
 
     }
