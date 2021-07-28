@@ -13,8 +13,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
+import coil.compose.rememberImagePainter
 import com.extack.jetmovies.domain.model.Movie
-import com.google.accompanist.coil.rememberCoilPainter
 
 @Composable
 fun LargeMovieComponent(movie: Movie, onClick: (Long) -> Unit) {
@@ -31,9 +31,9 @@ fun LargeMovieComponent(movie: Movie, onClick: (Long) -> Unit) {
         ) {
             val (image, title) = createRefs()
             Image(
-                painter = rememberCoilPainter(
-                    request = movie.imagePath,
-                    fadeIn = true
+                painter = rememberImagePainter(
+                    data = movie.imagePath,
+                    builder = { crossfade(true) }
                 ),
                 modifier = Modifier
                     .fillMaxSize()

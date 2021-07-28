@@ -20,6 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.LocalImageLoader
 import coil.compose.rememberImagePainter
 import com.extack.jetmovies.domain.model.Language
 import com.extack.jetmovies.domain.model.Movie
@@ -81,7 +82,7 @@ fun SmallMovieComponent(item: Movie, onMovieClick: (Long) -> Unit) {
                 data = item.imagePath,
                 imageLoader = LocalImageLoader.current,
                 builder = {
-                    if (true == true) this.crossfade(LoadPainterDefaults.FadeInTransitionDuration)
+                    crossfade(true)
                     placeholder(0)
                 }
             ),
@@ -90,7 +91,5 @@ fun SmallMovieComponent(item: Movie, onMovieClick: (Long) -> Unit) {
             modifier = Modifier
                 .fillMaxSize()
         )
-
     }
-
 }

@@ -68,7 +68,7 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-moshi:2.6.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.1")
 
-    implementation("com.google.accompanist:accompanist-coil:0.15.0")
+    implementation("io.coil-kt:coil-compose:1.3.1")
 
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
 

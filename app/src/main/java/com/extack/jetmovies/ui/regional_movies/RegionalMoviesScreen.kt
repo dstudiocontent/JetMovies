@@ -1,19 +1,14 @@
 package com.extack.jetmovies.ui.regional_movies
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.extack.jetmovies.extensions.items
-import com.extack.jetmovies.extensions.logInfo
 import com.extack.jetmovies.ui.commons.components.RegionalMoviesToolbar
 import com.extack.jetmovies.ui.commons.components.SmallMovieComponent
 import kotlinx.coroutines.CoroutineScope
@@ -31,21 +26,20 @@ fun RegionalMoviesScreen(
 ) {
     val viewModel = hiltViewModel<RegionalMoviesViewModel>()
     val movies = viewModel.getRegionalMovies(isoValue).collectAsLazyPagingItems()
-    val genres = viewModel.genreStateFlow.collectAsState()
+    //val genres = viewModel.genreStateFlow.collectAsState()
 
     val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
         bottomSheetState = BottomSheetState(BottomSheetValue.Collapsed)
     )
 
-    BackHandler {
+    /*BackHandler {
         if (bottomSheetScaffoldState.bottomSheetState.isExpanded)
             coroutineScope.launch { bottomSheetScaffoldState.bottomSheetState.collapse() }
         else moveUp()
-    }
+    }*/
 
-    logInfo(genres.toString())
 
-    BottomSheetScaffold(
+    /*BottomSheetScaffold(
         scaffoldState = bottomSheetScaffoldState,
         sheetContent = {
             Box(
@@ -68,23 +62,22 @@ fun RegionalMoviesScreen(
             }
         },
         sheetPeekHeight = 0.dp
-    ) {
-        Column {
-            RegionalMoviesToolbar(title = title) {
-                coroutineScope.launch {
-                    bottomSheetScaffoldState.bottomSheetState.apply {
-                        if (isExpanded) collapse()
-                        else expand()
-                    }
+    ) {}*/
+    Column {
+        RegionalMoviesToolbar(title = title) {
+            coroutineScope.launch {
+                bottomSheetScaffoldState.bottomSheetState.apply {
+                    if (isExpanded) collapse()
+                    else expand()
                 }
             }
-            LazyVerticalGrid(
-                cells = GridCells.Fixed(3), state = listState
-            ) {
-                items(movies) { movie ->
-                    SmallMovieComponent(item = movie ?: return@items) {
+        }
+        LazyVerticalGrid(
+            cells = GridCells.Fixed(3), state = listState
+        ) {
+            items(movies) { movie ->
+                SmallMovieComponent(item = movie ?: return@items) {
 
-                    }
                 }
             }
         }
