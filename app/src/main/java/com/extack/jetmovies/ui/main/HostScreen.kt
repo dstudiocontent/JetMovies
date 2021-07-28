@@ -15,7 +15,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.navArgument
-import com.extack.jetmovies.ui.commons.components.ToolbarComponent
 import com.extack.jetmovies.ui.commons.model.BottomNavScreens
 import com.extack.jetmovies.ui.home.HomeScreen
 import com.extack.jetmovies.ui.movie_detail.MovieScreen
@@ -23,6 +22,7 @@ import com.extack.jetmovies.ui.movies.MoviesScreen
 import com.extack.jetmovies.ui.programs.ProgramsScreen
 import com.extack.jetmovies.ui.regional_movies.RegionalMoviesScreen
 
+@ExperimentalMaterialApi
 @ExperimentalFoundationApi
 @Composable
 fun HostScreen(navController: NavHostController) {
@@ -44,7 +44,6 @@ fun HostScreen(navController: NavHostController) {
         Column(
             modifier = Modifier.padding(0.dp, 0.dp, 0.dp, padding.calculateBottomPadding())
         ) {
-            ToolbarComponent()
             NavConfig(navController)
         }
     }
@@ -74,6 +73,7 @@ fun BottomNav(navController: NavHostController, items: List<BottomNavScreens>) {
     }
 }
 
+@ExperimentalMaterialApi
 @ExperimentalFoundationApi
 @Composable
 fun NavConfig(navController: NavHostController) {
@@ -90,8 +90,8 @@ fun NavConfig(navController: NavHostController) {
         composable(BottomNavScreens.NavMovieScreen.route) {
             MoviesScreen(onMovieClick = { id ->
                 toMovieDetail(navController = navController, id = id)
-            }, onViewAllClick = { isoValue ->
-                navController.navigate("regional/${isoValue}") {
+            }, onViewAllClick = { language ->
+                navController.navigate("regional/${language.isoValue},${language.englishName}") {
                     popUpTo("regional") {
                         saveState = true
                     }
@@ -112,10 +112,18 @@ fun NavConfig(navController: NavHostController) {
         }
 
         composable(
-            "regional/{isoValue}",
-            arguments = listOf(navArgument("isoValue") { type = NavType.StringType })
+            "regional/{isoValue},{title}",
+            arguments = listOf(
+                navArgument("isoValue") { type = NavType.StringType },
+                navArgument("title") { type = NavType.StringType }
+            )
         ) { backstackEntry ->
-            RegionalMoviesScreen(backstackEntry.arguments?.getString("isoValue") ?: "")
+            RegionalMoviesScreen(
+                backstackEntry.arguments?.getString("isoValue") ?: "",
+                backstackEntry.arguments?.getString("title") ?: ""
+            ) {
+                navController.navigateUp()
+            }
         }
 
     }

@@ -2,15 +2,10 @@ package com.extack.jetmovies.ui.commons.model
 
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.rounded.Home
 import androidx.compose.material.icons.rounded.Movie
 import androidx.compose.material.icons.rounded.Tv
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.graphics.vector.VectorPainter
-import androidx.compose.ui.res.animatedVectorResource
-import androidx.compose.ui.res.painterResource
 import com.extack.jetmovies.R
 
 sealed class BottomNavScreens(

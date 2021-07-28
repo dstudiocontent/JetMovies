@@ -28,7 +28,7 @@ class MovieSource @Inject constructor(
             LoadResult.Page(
                 data = moviesListResponse.results.map { it.toMovie(ImageType.BACKDROP) },
                 prevKey = if (nextPage == 1) null else nextPage - 1,
-                nextKey = moviesListResponse.page.plus(1)
+                nextKey = if (moviesListResponse.page > 5) null else moviesListResponse.page.plus(1)
             )
         } catch (e: Exception) {
             LoadResult.Error(e)

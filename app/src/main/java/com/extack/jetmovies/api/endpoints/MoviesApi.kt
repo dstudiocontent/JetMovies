@@ -1,5 +1,6 @@
 package com.extack.jetmovies.api.endpoints
 
+import com.extack.jetmovies.api.response.GenreListResponse
 import com.extack.jetmovies.api.response.MovieListResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -16,4 +17,7 @@ interface MoviesApi {
         @Query("sort_by") sortBy: String = "release_date.desc",
         @Query("release_date.lte") today: String = LocalDate.now().toString()
     ): MovieListResponse
+
+    @GET("genre/movie/list")
+    suspend fun getMovieGenres(): GenreListResponse
 }

@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.navigation.compose.rememberNavController
@@ -15,6 +16,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private val viewModel by viewModels<MainActivityViewModel>()
 
+    @ExperimentalMaterialApi
     @ExperimentalFoundationApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,7 +24,9 @@ class MainActivity : ComponentActivity() {
             JetMoviesTheme {
                 val navController = rememberNavController()
                 Surface(color = MaterialTheme.colors.background) {
-                    HostScreen(navController = navController)
+                    HostScreen(
+                        navController = navController
+                    )
                 }
             }
         }

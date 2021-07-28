@@ -1,31 +1,92 @@
 package com.extack.jetmovies.ui.regional_movies
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.lazy.GridCells
-import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.LazyVerticalGrid
-import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.*
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.extack.jetmovies.domain.model.Movie
+import com.extack.jetmovies.extensions.items
+import com.extack.jetmovies.extensions.logInfo
+import com.extack.jetmovies.ui.commons.components.RegionalMoviesToolbar
 import com.extack.jetmovies.ui.commons.components.SmallMovieComponent
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
+@ExperimentalMaterialApi
 @ExperimentalFoundationApi
 @Composable
-fun RegionalMoviesScreen(isoValue: String, listState: LazyListState = rememberLazyListState()) {
+fun RegionalMoviesScreen(
+    isoValue: String,
+    title: String,
+    listState: LazyListState = rememberLazyListState(),
+    coroutineScope: CoroutineScope = rememberCoroutineScope(),
+    moveUp: () -> Unit
+) {
     val viewModel = hiltViewModel<RegionalMoviesViewModel>()
     val movies = viewModel.getRegionalMovies(isoValue).collectAsLazyPagingItems()
-    Column {
-        LazyVerticalGrid(cells = GridCells.Fixed(3), state = listState) {
-            items(movies.itemCount) { index ->
-                val movie = movies.getAsState(index = index)
-                SmallMovieComponent(item = movie.value ?: return@items) {
+    val genres = viewModel.genreStateFlow.collectAsState()
 
+    val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
+        bottomSheetState = BottomSheetState(BottomSheetValue.Collapsed)
+    )
+
+    BackHandler {
+        if (bottomSheetScaffoldState.bottomSheetState.isExpanded)
+            coroutineScope.launch { bottomSheetScaffoldState.bottomSheetState.collapse() }
+        else moveUp()
+    }
+
+    logInfo(genres.toString())
+
+    BottomSheetScaffold(
+        scaffoldState = bottomSheetScaffoldState,
+        sheetContent = {
+            Box(
+                Modifier
+                    .fillMaxWidth()
+                    .height(200.dp)
+            ) {
+                LazyColumn {
+                    items(genres.value) { genre ->
+                        Row {
+                            Checkbox(checked = genre.isChecked, onCheckedChange = {
+                                logInfo(it.toString())
+                                viewModel.onGenreSelected(genre.id, it)
+                            })
+                            Text(text = genre.name)
+                        }
+
+                    }
                 }
             }
+        },
+        sheetPeekHeight = 0.dp
+    ) {
+        Column {
+            RegionalMoviesToolbar(title = title) {
+                coroutineScope.launch {
+                    bottomSheetScaffoldState.bottomSheetState.apply {
+                        if (isExpanded) collapse()
+                        else expand()
+                    }
+                }
+            }
+            LazyVerticalGrid(
+                cells = GridCells.Fixed(3), state = listState
+            ) {
+                items(movies) { movie ->
+                    SmallMovieComponent(item = movie ?: return@items) {
 
+                    }
+                }
+            }
         }
     }
 }

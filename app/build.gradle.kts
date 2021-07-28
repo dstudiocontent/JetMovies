@@ -3,6 +3,7 @@ plugins {
     id("kotlin-android")
     id("dagger.hilt.android.plugin")
     id("kotlin-kapt")
+    id("kotlin-parcelize")
 }
 
 android {
@@ -46,22 +47,19 @@ android {
 
 dependencies {
 
-    implementation("androidx.core:core-ktx:1.5.0")
-    implementation("androidx.appcompat:appcompat:1.3.0")
-    implementation("com.google.android.material:material:1.3.0")
+    implementation("androidx.core:core-ktx:1.6.0")
+    implementation("androidx.appcompat:appcompat:1.3.1")
+    implementation("com.google.android.material:material:1.4.0")
 
     implementation("androidx.compose.ui:ui-util:${rootProject.extra["compose_version"]}")
     implementation("androidx.compose.ui:ui:${rootProject.extra["compose_version"]}")
     implementation("androidx.compose.material:material:${rootProject.extra["compose_version"]}")
-    implementation ("androidx.compose.material:material-icons-extended:${rootProject.extra["compose_version"]}")
+    implementation("androidx.compose.material:material-icons-extended:${rootProject.extra["compose_version"]}")
     implementation("androidx.compose.ui:ui-tooling:${rootProject.extra["compose_version"]}")
-    implementation ("androidx.compose.runtime:runtime-livedata:${rootProject.extra["compose_version"]}")
+    implementation("androidx.compose.runtime:runtime-livedata:${rootProject.extra["compose_version"]}")
 
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.3.1")
-    implementation("androidx.activity:activity-compose:1.3.0-alpha08")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha05")
-
-    implementation ("androidx.paging:paging-compose:1.0.0-alpha09")
+    implementation("androidx.activity:activity-compose:1.3.0")
 
     implementation("com.google.dagger:hilt-android:2.36")
     kapt("com.google.dagger:hilt-compiler:2.36")
@@ -70,17 +68,19 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-moshi:2.6.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.1")
 
-    implementation ("com.google.accompanist:accompanist-coil:0.10.0")
+    implementation("com.google.accompanist:accompanist-coil:0.15.0")
 
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
 
-    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.0-alpha07")
+    // Alpha or beta libraries
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha07")
+    implementation("androidx.paging:paging-compose:1.0.0-alpha12")
+    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.0-beta01")
+    implementation("androidx.navigation:navigation-compose:2.4.0-alpha05")
+    implementation("androidx.hilt:hilt-navigation-compose:1.0.0-alpha03")
 
-    implementation ("androidx.navigation:navigation-compose:2.4.0-alpha01")
-    implementation ("androidx.hilt:hilt-navigation-compose:1.0.0-alpha02")
-
-    testImplementation("junit:junit:4.+")
-    androidTestImplementation("androidx.test.ext:junit:1.1.2")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.3.0")
+    testImplementation("junit:junit:4.13.2")
+    androidTestImplementation("androidx.test.ext:junit:1.1.3")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:${rootProject.extra["compose_version"]}")
 }

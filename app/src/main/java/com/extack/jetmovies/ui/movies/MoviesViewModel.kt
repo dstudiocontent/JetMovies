@@ -2,11 +2,11 @@ package com.extack.jetmovies.ui.movies
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.extack.jetmovies.api.commons.Resource
-import com.extack.jetmovies.domain.mapper.toMovie
+import com.extack.jetmovies.api.commons.onFailure
+import com.extack.jetmovies.api.commons.onSuccess
+import com.extack.jetmovies.domain.mapper.toMovieList
 import com.extack.jetmovies.domain.model.ImageType
 import com.extack.jetmovies.domain.model.Language
-import com.extack.jetmovies.domain.model.Movie
 import com.extack.jetmovies.domain.model.RegionalMovie
 import com.extack.jetmovies.domain.repository.RegionalMoviesRepository
 import com.extack.jetmovies.extensions.logError
@@ -40,22 +40,15 @@ class MoviesViewModel @Inject constructor(
     private fun fetchRegionalMovies() {
         initialLanguages.forEach { language ->
             viewModelScope.launch {
-                when (val apiCall = regionalMoviesRepository.getRegionalMovies(
-                    originalLang = language.isoValue
-                )) {
-                    is Resource.Success -> {
-                        val regionalMovie =
-                            RegionalMovie(
-                                language,
-                                apiCall.data.results.map {
-                                    it.toMovie(ImageType.POSTER)
-                                })
+                regionalMoviesRepository.getRegionalMovies(originalLang = language.isoValue)
+                    .onSuccess { movies ->
+                        val regionalMovies =
+                            RegionalMovie(language, movies.results.toMovieList(ImageType.POSTER))
                         _regionalMoviesStateFlow.apply {
-                            value = value.toMutableList().plus(regionalMovie)
+                            value = value.toMutableList().plus(regionalMovies)
                         }
                     }
-                    is Resource.Failure -> logError(apiCall.error.errorMessage)
-                }
+                    .onFailure { logError(it.errorMessage) }
             }
         }
     }

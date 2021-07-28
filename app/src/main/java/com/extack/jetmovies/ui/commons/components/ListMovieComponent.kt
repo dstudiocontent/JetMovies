@@ -20,16 +20,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.rememberImagePainter
+import com.extack.jetmovies.domain.model.Language
 import com.extack.jetmovies.domain.model.Movie
 import com.extack.jetmovies.domain.model.RegionalMovie
 import com.extack.jetmovies.ui.theme.qs
-import com.google.accompanist.coil.rememberCoilPainter
 
 @Composable
 fun ListMovieComponent(
     regionalMovie: RegionalMovie,
     scrollState: LazyListState,
-    onViewAllClick: (String) -> Unit,
+    onViewAllClick: (Language) -> Unit,
     onMovieClick: (Long) -> Unit
 ) {
     Column(modifier = Modifier.padding(0.dp, 12.dp, 0.dp, 12.dp)) {
@@ -44,7 +45,7 @@ fun ListMovieComponent(
                 fontSize = 18.sp,
             )
             TextButton(modifier = Modifier.alignByBaseline(),
-                onClick = { onViewAllClick(regionalMovie.language.isoValue) }) {
+                onClick = { onViewAllClick(regionalMovie.language) }) {
                 Text(text = "View all", fontFamily = qs, fontWeight = FontWeight.SemiBold)
             }
         }
@@ -67,7 +68,7 @@ fun SmallMovieComponent(item: Movie, onMovieClick: (Long) -> Unit) {
         .clickable { onMovieClick(item.id) }) {
 
         Text(
-            text = item.title,
+            text = item.originalTitle,
             fontFamily = qs,
             fontWeight = FontWeight.Medium,
             textAlign = TextAlign.Center,
@@ -76,7 +77,14 @@ fun SmallMovieComponent(item: Movie, onMovieClick: (Long) -> Unit) {
                 .fillMaxWidth()
         )
         Image(
-            painter = rememberCoilPainter(request = item.imagePath, fadeIn = true),
+            painter = rememberImagePainter(
+                data = item.imagePath,
+                imageLoader = LocalImageLoader.current,
+                builder = {
+                    if (true == true) this.crossfade(LoadPainterDefaults.FadeInTransitionDuration)
+                    placeholder(0)
+                }
+            ),
             contentDescription = "Movie Image",
             contentScale = ContentScale.Crop,
             modifier = Modifier

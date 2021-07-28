@@ -10,6 +10,8 @@ data class MovieListResponse(
 data class MovieResponse(
     val id: Long,
     val title: String,
+    @field:Json(name = "original_title")
+    val originalTitle: String,
     @field:Json(name = "backdrop_path")
     val backdropPath: String,
     @field:Json(name = "poster_path")
